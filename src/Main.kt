@@ -1,12 +1,24 @@
-
+import java.util.*
 
 fun main(args: Array<String>) {
-val op: OperationType = OperationType.Add
-    println(op)
+    //TODO: Create main menu, create way to add varied operations
+    val eqList = ArrayList<Equation>()
+    for(i in 1..20) {
+        val eq = CreateEquation(listOf(OperationType.Add, OperationType.Subtract, OperationType.Multiply, OperationType.Divide))
+        eqList.add(eq.createEquation())
+    }
+    for(i in 0..19){
+        print("${eqList[i].operand1} ${eqList[i].operation} ${eqList[i].operand2} = ")
+        val myAnswer = readLine()!!.toInt()
+        if(myAnswer == eqList[i].answer)
+            println("Right!! Good job!!")
+        else
+            println("Oops. Incorrect answer was ${eqList[i].answer}")
+    }
 }
 
 enum class OperationType {
-    Add, Subtract, Multiple, Divide
+    Add, Subtract, Multiply, Divide
 }
 
 data class Equation(val operand1:Int, val operand2:Int, val operation:OperationType) {
@@ -17,24 +29,55 @@ data class Equation(val operand1:Int, val operand2:Int, val operation:OperationT
             OperationType.Add -> operand1 + operand2
             OperationType.Subtract -> operand1 - operand2
             OperationType.Divide -> operand1 / operand2 // make operand 1 large divisor
-            OperationType.Multiple -> operand1 * operand2
+            OperationType.Multiply -> operand1 * operand2
 
         }
     }
+
 }
 
-class CreateEquations(val numberOfEquations:Int){
-    val equationList = ArrayList<Equation>()
-    var numberRight = 0
+class CreateEquation(val ListOfPossibleOperations: List<OperationType>) {
+    private val random = Random()
+    private val operationSign = ListOfPossibleOperations[random.nextInt(ListOfPossibleOperations.size)]
+    var leftOperand: Int = 0
+    var rightOperand: Int = 0
 
-    //TODO: Finish me
-    /*
-    * Functions
-    * =========
-    * get Operation (use rand number )
-    *   based on operation ( add in choose of all operations or selection)
-    *   determine operand 1 and 2
-    *   check answer against user answer (decouple for future gui)
-    *   Tally right answers and score...
-    * */
+    init {
+        when (operationSign) {
+            OperationType.Add -> {
+                leftOperand = (random.nextInt(100) + 1)
+                rightOperand = (random.nextInt(100) + 1)
+            }
+
+            OperationType.Subtract -> {
+                leftOperand = (random.nextInt(100) + 1)
+                rightOperand = (random.nextInt(100) + 1)
+            }
+
+            OperationType.Multiply -> {
+                leftOperand = (random.nextInt(12) + 2)
+                rightOperand = (random.nextInt(12) + 2)
+            }
+
+            OperationType.Divide -> {
+                leftOperand = (random.nextInt(12) + 2)
+                rightOperand = (random.nextInt(12) + 2)
+                leftOperand = leftOperand * rightOperand
+            }
+
+        }
+
+    }
+
+    fun createEquation() = Equation(leftOperand, rightOperand, operationSign)
+}
+// TODO: Figure out how you will add operation list to this
+class EquationList(val numberOfEquations: Int = 20, val operationList: List<OperationType>){
+    val equationlist = ArrayList<Equation>()
+    init {
+        for(i in 1..numberOfEquations){
+            //val createEquation = CreateEquation(/*TODO: Fill me in*/)
+                // used to fill up equation list for game
+        }
+    }
 }
